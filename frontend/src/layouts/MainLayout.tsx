@@ -4,6 +4,7 @@ import { GrainOverlay } from '../components/atmosphere/GrainOverlay';
 import { VignetteOverlay } from '../components/atmosphere/VignetteOverlay';
 import { FogLayer } from '../components/atmosphere/FogLayer';
 import { AmbientGlow } from '../components/atmosphere/AmbientGlow';
+import { LiquidCursorDistortion } from '../components/effects/LiquidCursorDistortion';
 import { CinematicEnvironment } from '../components/three/CinematicEnvironment';
 
 interface MainLayoutProps {
@@ -58,6 +59,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <ArchiveFrame />
       <VignetteOverlay />
       <GrainOverlay />
+      <LiquidCursorDistortion
+        trailLength={13}
+        distortionStrength={1.05}
+        radius={84}
+        blur={9}
+        fadeSpeed={0.12}
+      />
       
       {/* Content wrapper (z-20 ensures it's above background systems) */}
       <div className="relative z-20 w-full flex flex-col">

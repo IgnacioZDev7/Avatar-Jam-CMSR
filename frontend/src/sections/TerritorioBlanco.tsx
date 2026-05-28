@@ -14,12 +14,13 @@ export const TerritorioBlanco = () => {
       className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden border-t border-white/10 px-6 py-36 md:px-24 md:py-44"
     >
       <motion.div style={{ y: imageY }} className="absolute -inset-x-8 -inset-y-20 z-0">
-        <img src={extractionImage} alt="" className="h-full w-full object-cover object-center opacity-70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#05050a] via-black/45 to-[#07080a]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/25 to-black/70" />
+        <img src={extractionImage} alt="" className="h-full w-full object-cover object-center opacity-88 saturate-[1.12] contrast-[1.08]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#05050a]/82 via-black/18 to-[#071014]/82" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/58 via-transparent to-[#10202a]/46" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_28%,rgba(34,211,238,0.16),transparent_30%)] mix-blend-screen" />
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:120px_120px] opacity-15" />
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:120px_120px] opacity-25" />
 
       <motion.div
         variants={STAGGER_CONTAINER}
@@ -29,7 +30,7 @@ export const TerritorioBlanco = () => {
         className="relative z-20 flex w-full max-w-6xl flex-col items-center gap-24 text-center md:gap-32"
       >
         <header className="flex flex-col items-center gap-8">
-          <motion.span variants={FADE_IN_UP} className="text-[10px] font-black uppercase tracking-[1em] text-white/55">
+          <motion.span variants={FADE_IN_UP} className="text-[10px] font-black uppercase tracking-[1em] text-cyan-100/75">
             Coordenadas // Salar de Uyuni
           </motion.span>
 
@@ -61,8 +62,8 @@ export const TerritorioBlanco = () => {
             },
           ].map((item) => (
             <motion.article key={item.label} variants={FADE_IN_UP} className="border-l border-white/20 pl-6">
-              <h3 className="mb-6 text-[9px] font-black uppercase tracking-[0.6em] text-white/55">{item.label}</h3>
-              <p className="text-lg font-light leading-relaxed text-white/72 md:text-xl">{item.text}</p>
+              <h3 className="mb-6 text-[9px] font-black uppercase tracking-[0.6em] text-cyan-100/78">{item.label}</h3>
+              <p className="text-lg font-light leading-relaxed text-white/88 md:text-xl">{item.text}</p>
             </motion.article>
           ))}
         </div>
@@ -71,8 +72,8 @@ export const TerritorioBlanco = () => {
           variants={FADE_IN_UP}
           className="group relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden border border-white/15 bg-black/30"
         >
-          <img src={extractionImage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-[3000ms] group-hover:scale-105" />
-          <div className="absolute inset-0 bg-black/45" />
+          <img src={extractionImage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-85 saturate-[1.15] transition-transform duration-[3000ms] group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/28" />
           <motion.div
             animate={{ x: ['-100%', '100%'] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}

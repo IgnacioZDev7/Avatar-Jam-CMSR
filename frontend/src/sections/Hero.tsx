@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
 import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
 import saltHorizon from '../assets/imagenes/6.png';
+import personaje from '../assets/imagenes/personaje.png';
 
 const MetadataBlock = ({ label, value }: { label: string; value: string }) => (
   <div className="flex flex-col gap-1 opacity-60">
@@ -36,15 +36,9 @@ export const Hero = () => {
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
 
   const springX = useSpring(mouseX, { stiffness: 15, damping: 45 });
   const springY = useSpring(mouseY, { stiffness: 15, damping: 45 });
-  const distortionX = useSpring(cursorX, { stiffness: 650, damping: 42, mass: 0.35 });
-  const distortionY = useSpring(cursorY, { stiffness: 650, damping: 42, mass: 0.35 });
-  const trailDistortionX = useSpring(cursorX, { stiffness: 220, damping: 32, mass: 0.45 });
-  const trailDistortionY = useSpring(cursorY, { stiffness: 220, damping: 32, mass: 0.45 });
 
   const moveX = useTransform(springX, [-0.5, 0.5], ['-2%', '2%']);
   const moveY = useTransform(springY, [-0.5, 0.5], ['-1%', '1%']);
@@ -53,37 +47,42 @@ export const Hero = () => {
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX / window.innerWidth - 0.5);
       mouseY.set(e.clientY / window.innerHeight - 0.5);
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
     };
 
-    cursorX.set(window.innerWidth / 2);
-    cursorY.set(window.innerHeight / 2);
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [cursorX, cursorY, mouseX, mouseY]);
+  }, [mouseX, mouseY]);
 
   return (
     <section className="relative flex min-h-[112vh] w-full flex-col justify-between overflow-hidden px-6 py-10 md:px-16 md:py-16 lg:px-24">
       <motion.div style={{ y: bgY, x: moveX }} className="pointer-events-none absolute -inset-x-8 -top-10 bottom-0 z-0">
-        <img src={saltHorizon} alt="" className="h-full w-full object-cover object-center opacity-90" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1b102e]/35 via-[#2a1c4d]/15 to-[#05050a]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/20 to-black/65" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(244,114,182,0.26),transparent_35%)] mix-blend-screen" />
+        <img src={saltHorizon} alt="" className="h-full w-full object-cover object-center opacity-100 saturate-[1.2] contrast-[1.08]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#3d1d58]/22 via-[#7c3aed]/10 to-[#100719]/78" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/52 via-transparent to-[#12061d]/42" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(244,114,182,0.34),transparent_38%)] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_22%,rgba(250,204,21,0.18),transparent_28%)] mix-blend-screen" />
+      </motion.div>
+
+      <motion.div style={{ x: moveX, y: moveY }} className="pointer-events-none absolute inset-0 z-10 opacity-70">
+        <div className="absolute inset-x-0 top-1/2 h-[42vh] bg-gradient-to-t from-[#2b1548]/55 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:90px_90px] opacity-25" />
       </motion.div>
 
       <motion.div
-        style={{ left: distortionX, top: distortionY }}
-        className="hero-cursor-distortion pointer-events-none absolute z-[12] hidden md:block"
-      />
-      <motion.div
-        style={{ left: trailDistortionX, top: trailDistortionY }}
-        className="hero-cursor-distortion hero-cursor-distortion--trail pointer-events-none absolute z-[11] hidden md:block"
-      />
-
-      <motion.div style={{ x: moveX, y: moveY }} className="pointer-events-none absolute inset-0 z-10 opacity-70">
-        <div className="absolute inset-x-0 top-1/2 h-[42vh] bg-gradient-to-t from-[#18102b]/80 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:90px_90px] opacity-15" />
+        initial={{ opacity: 0, x: 48, y: 28, scale: 0.94 }}
+        animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+        transition={{ duration: 1.6, delay: 0.75, ease: 'easeOut' }}
+        className="pointer-events-none absolute bottom-0 right-[3vw] z-20 hidden h-[78vh] max-h-[760px] min-h-[520px] w-[min(34vw,430px)] lg:block"
+      >
+        <motion.img
+          src={personaje}
+          alt=""
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          className="h-full w-full object-contain object-bottom drop-shadow-[0_0_34px_rgba(251,191,36,0.28)]"
+        />
+        <div className="absolute bottom-[6%] left-1/2 h-20 w-52 -translate-x-1/2 rounded-full bg-black/55 blur-2xl" />
+        <div className="absolute inset-y-[10%] right-0 w-2/3 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.16),transparent_62%)] blur-2xl" />
       </motion.div>
 
       <motion.header
@@ -93,10 +92,10 @@ export const Hero = () => {
         className="relative z-30 flex w-full items-start justify-between border-t border-white/15 pt-6"
       >
         <div className="flex flex-col gap-3">
-          <span className="text-[9px] font-black uppercase tracking-[0.7em] text-white/75 md:tracking-[1em]">
+          <span className="text-[9px] font-black uppercase tracking-[0.7em] text-white/90 md:tracking-[1em]">
             Archivo // Genoveva Rios
           </span>
-          <span className="font-mono text-[7px] uppercase italic tracking-[0.4em] text-white/45">
+          <span className="font-mono text-[7px] uppercase italic tracking-[0.4em] text-cyan-100/70">
             Fragmento recuperado: 27.05.2189
           </span>
         </div>
@@ -126,7 +125,7 @@ export const Hero = () => {
 
             <motion.div variants={FADE_IN_UP} className="mt-12 flex items-center gap-8 overflow-hidden">
               <div className="h-16 w-px bg-white/35" />
-              <h2 className="text-xl font-extralight uppercase leading-tight tracking-[0.42em] text-white/70 md:text-4xl">
+              <h2 className="text-xl font-extralight uppercase leading-tight tracking-[0.42em] text-cyan-50/85 md:text-4xl">
                 La Tejedora de la Memoria
               </h2>
             </motion.div>
@@ -134,22 +133,16 @@ export const Hero = () => {
 
           <div className="flex w-full flex-col items-start gap-10 md:flex-row md:items-end md:gap-28">
             <motion.div variants={FADE_IN_UP} className="max-w-lg">
-              <p className="border-l border-white/20 pl-8 text-lg font-light italic leading-relaxed tracking-wide text-white/75 md:pl-10 md:text-2xl">
+              <p className="border-l border-cyan-100/40 pl-8 text-lg font-light italic leading-relaxed tracking-wide text-white/90 drop-shadow-[0_2px_18px_rgba(0,0,0,0.65)] md:pl-10 md:text-2xl">
                 "Un pais no desaparece cuando pierde una guerra. Desaparece cuando su gente olvida quien es."
               </p>
             </motion.div>
 
-            <motion.div variants={FADE_IN_UP} className="flex max-w-md flex-col gap-6">
-              <p className="font-mono text-[10px] uppercase leading-loose tracking-[0.22em] text-white/55">
+            <motion.div variants={FADE_IN_UP} className="max-w-xl border-t border-cyan-100/25 pt-7">
+              <p className="font-mono text-[10px] uppercase leading-loose tracking-[0.24em] text-cyan-50/82 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
                 Bolivia, ano 2189. El litio convirtio al Salar de Uyuni en una zona industrial militarizada.
                 Genoveva guarda la historia prohibida en tejidos inteligentes.
               </p>
-              <button className="group relative w-fit overflow-hidden bg-white px-10 py-6 text-black transition-all duration-700 ease-out hover:bg-yellow-100 active:scale-95 md:px-14">
-                <span className="relative z-10 flex items-center gap-5 text-[10px] font-black uppercase tracking-[0.8em]">
-                  Entrar al archivo
-                  <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
-                </span>
-              </button>
             </motion.div>
           </div>
         </div>
