@@ -4,8 +4,6 @@ import React from 'react';
 export const AmbientGlow: React.FC = () => {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {/* Base Salt-Night Color (Deep Blue-Gray instead of pure black) */}
-      <div className="absolute inset-0 bg-[#06070a]" />
       
       {/* 1. Large Horizon Glow (The flat Andean horizon) */}
       <motion.div 

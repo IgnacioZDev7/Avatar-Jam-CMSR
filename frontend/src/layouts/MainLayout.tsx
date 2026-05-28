@@ -43,7 +43,7 @@ const ArchiveFrame = () => (
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className="relative min-h-screen w-full bg-[#06070a] text-zinc-300 selection:bg-white/10">
+    <div className="relative min-h-screen w-full bg-[#0a0a0e] text-zinc-300 selection:bg-white/10">
       {/* 3D Cinematic Environment Layer (z-0 base) */}
       <CinematicEnvironment />
 
@@ -65,7 +65,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </div>
       
       {/* Cinematic Depth Fade (Bottom Global) */}
-      <div className="fixed inset-x-0 bottom-0 h-[20vh] z-40 pointer-events-none bg-gradient-to-t from-[#06070a] to-transparent opacity-80" />
+      <div className="fixed inset-x-0 bottom-0 h-[20vh] z-40 pointer-events-none bg-gradient-to-t from-[#0a0a0e] to-transparent opacity-80" />
     </div>
   );
 };
