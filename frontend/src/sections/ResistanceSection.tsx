@@ -98,7 +98,7 @@ export const ResistanceSection = () => {
         <header className="flex flex-col items-center gap-10 text-center">
           <motion.h2
             variants={TITLE_REVEAL}
-            className="text-7xl font-black uppercase leading-[0.8] tracking-normal text-white md:text-9xl"
+            className="text-5xl font-black uppercase leading-[0.8] tracking-normal text-white md:text-9xl"
           >
             La Resistencia
           </motion.h2>
