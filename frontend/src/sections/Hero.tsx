@@ -1,156 +1,218 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
 import { useEffect } from 'react';
-import { TITLE_REVEAL, FADE_IN_UP, STAGGER_CONTAINER } from '../lib/motion';
-
-// --- SUB-COMPONENTS ---
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
+import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
+import saltHorizon from '../assets/imagenes/6.png';
 
 const MetadataBlock = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex flex-col gap-1 opacity-[0.25]">
-    <span className="text-[6px] text-zinc-500 tracking-[0.5em] font-black uppercase">{label}</span>
-    <span className="text-[9px] text-zinc-400 tracking-[0.2em] font-mono">{value}</span>
+  <div className="flex flex-col gap-1 opacity-60">
+    <span className="text-[6px] font-black uppercase tracking-[0.5em] text-white/60">{label}</span>
+    <span className="font-mono text-[9px] tracking-[0.2em] text-white/75">{value}</span>
   </div>
 );
 
 const ScrollGuide = () => (
-  <motion.div 
+  <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 0.2 }}
-    transition={{ delay: 5, duration: 2 }}
-    className="absolute bottom-12 right-12 flex items-center gap-6 z-40"
+    animate={{ opacity: 0.7 }}
+    transition={{ delay: 3.2, duration: 1.4 }}
+    className="absolute bottom-12 right-12 z-40 hidden items-center gap-6 md:flex"
   >
-    <span className="text-[8px] tracking-[1em] text-zinc-600 uppercase font-mono">Deslizar</span>
-    <div className="w-16 h-px bg-zinc-800 relative overflow-hidden">
-      <motion.div 
+    <span className="font-mono text-[8px] uppercase tracking-[1em] text-white/60">Deslizar</span>
+    <div className="relative h-px w-16 overflow-hidden bg-white/25">
+      <motion.div
         animate={{ x: ['-100%', '100%'] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 w-full h-full bg-zinc-400/40"
+        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+        className="absolute inset-0 h-full w-full bg-white/80"
       />
     </div>
   </motion.div>
 );
 
+const ModelPlaceholder = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 40, scale: 0.96 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ delay: 1.35, duration: 1.8, ease: 'easeOut' }}
+    className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-20 mx-auto flex h-[58vh] min-h-[390px] max-h-[690px] w-[min(58vw,520px)] items-end justify-center"
+  >
+    <motion.div
+      animate={{ y: [0, -10, 0] }}
+      transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+      className="relative h-full w-full"
+    >
+      <div className="absolute left-1/2 top-[3%] h-[17%] w-[22%] -translate-x-1/2 rounded-full border border-white/10 bg-black/75 shadow-[0_0_80px_rgba(234,179,8,0.22)]" />
+      <div className="absolute left-1/2 top-[18%] h-[43%] w-[34%] -translate-x-1/2 rounded-b-[18%] rounded-t-[42%] border border-white/10 bg-gradient-to-b from-black/90 via-zinc-950/95 to-black/90" />
+      <div className="absolute left-[24%] top-[21%] h-[45%] w-[9%] rotate-[8deg] rounded-full bg-black/85" />
+      <div className="absolute right-[24%] top-[21%] h-[45%] w-[9%] -rotate-[8deg] rounded-full bg-black/85" />
+      <div className="absolute left-[38%] top-[58%] h-[40%] w-[9%] rotate-[3deg] rounded-full bg-black/90" />
+      <div className="absolute right-[38%] top-[58%] h-[40%] w-[9%] -rotate-[3deg] rounded-full bg-black/90" />
+      <div className="absolute left-[53%] top-[15%] h-[72%] w-[3px] rotate-[-8deg] rounded-full bg-gradient-to-b from-red-500 via-yellow-300 to-emerald-400 shadow-[0_0_24px_rgba(250,204,21,0.8)]" />
+      <div className="absolute left-1/2 bottom-[1%] h-[8%] w-[52%] -translate-x-1/2 rounded-full bg-black/80 blur-xl" />
+      <div className="absolute left-1/2 top-[38%] -translate-x-1/2 rounded border border-white/15 bg-black/45 px-4 py-2 text-center backdrop-blur-sm">
+        <span className="block text-[8px] font-black uppercase tracking-[0.6em] text-white/70">Modelo 3D</span>
+        <span className="mt-1 block text-[7px] uppercase tracking-[0.35em] text-white/40">En desarrollo</span>
+      </div>
+    </motion.div>
+  </motion.div>
+);
+
 export const Hero = () => {
   const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 1000], [0, 250]);
-  
+  const yParallax = useTransform(scrollY, [0, 1000], [0, 180]);
+  const bgY = useTransform(scrollY, [0, 900], [0, 120]);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+
   const springX = useSpring(mouseX, { stiffness: 15, damping: 45 });
   const springY = useSpring(mouseY, { stiffness: 15, damping: 45 });
+  const distortionX = useSpring(cursorX, { stiffness: 650, damping: 42, mass: 0.35 });
+  const distortionY = useSpring(cursorY, { stiffness: 650, damping: 42, mass: 0.35 });
+  const trailDistortionX = useSpring(cursorX, { stiffness: 220, damping: 32, mass: 0.45 });
+  const trailDistortionY = useSpring(cursorY, { stiffness: 220, damping: 32, mass: 0.45 });
 
   const moveX = useTransform(springX, [-0.5, 0.5], ['-2%', '2%']);
-  const moveY = useTransform(springY, [-0.5, 0.5], ['-2%', '2%']);
+  const moveY = useTransform(springY, [-0.5, 0.5], ['-1%', '1%']);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set((e.clientX / window.innerWidth) - 0.5);
-      mouseY.set((e.clientY / window.innerHeight) - 0.5);
+      mouseX.set(e.clientX / window.innerWidth - 0.5);
+      mouseY.set(e.clientY / window.innerHeight - 0.5);
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
+
+    cursorX.set(window.innerWidth / 2);
+    cursorY.set(window.innerHeight / 2);
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, [cursorX, cursorY, mouseX, mouseY]);
 
   return (
-    <section className="relative min-h-[110vh] w-full flex flex-col justify-between px-8 md:px-24 py-16 md:py-24 overflow-hidden">
-      
-      {/* --- ATMOSPHERIC DEPTH --- */}
-      <motion.div style={{ x: moveX, y: moveY }} className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <div className="absolute top-1/4 left-1/4 w-full h-full bg-[radial-gradient(circle_at_center,rgba(100,120,160,0.03)_0%,transparent_60%)] blur-[100px]" />
+    <section className="relative flex min-h-[112vh] w-full flex-col justify-between overflow-hidden px-6 py-10 md:px-16 md:py-16 lg:px-24">
+      <motion.div style={{ y: bgY, x: moveX }} className="pointer-events-none absolute -inset-x-8 -top-10 bottom-0 z-0">
+        <img src={saltHorizon} alt="" className="h-full w-full object-cover object-center opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1b102e]/35 via-[#2a1c4d]/15 to-[#05050a]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/20 to-black/65" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(244,114,182,0.26),transparent_35%)] mix-blend-screen" />
       </motion.div>
 
-      {/* --- HEADER HUD --- */}
-      <motion.header 
+      <motion.div
+        style={{ left: distortionX, top: distortionY }}
+        className="hero-cursor-distortion pointer-events-none absolute z-[12] hidden md:block"
+      />
+      <motion.div
+        style={{ left: trailDistortionX, top: trailDistortionY }}
+        className="hero-cursor-distortion hero-cursor-distortion--trail pointer-events-none absolute z-[11] hidden md:block"
+      />
+
+      <motion.div style={{ x: moveX, y: moveY }} className="pointer-events-none absolute inset-0 z-10 opacity-70">
+        <div className="absolute inset-x-0 top-1/2 h-[42vh] bg-gradient-to-t from-[#18102b]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:90px_90px] opacity-15" />
+      </motion.div>
+
+      <ModelPlaceholder />
+
+      <motion.header
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 2, delay: 1.2 }}
-        className="relative z-30 flex justify-between items-start w-full border-t border-zinc-900/30 pt-8"
+        className="relative z-30 flex w-full items-start justify-between border-t border-white/15 pt-6"
       >
         <div className="flex flex-col gap-3">
-           <span className="text-[9px] tracking-[1em] text-zinc-500 font-black uppercase">Archivo // Genoveva Ríos</span>
-           <span className="text-[7px] tracking-[0.4em] text-zinc-600 uppercase font-mono italic">Fragmento recuperado: 27.05.2189</span>
+          <span className="text-[9px] font-black uppercase tracking-[0.7em] text-white/75 md:tracking-[1em]">
+            Archivo // Genoveva Rios
+          </span>
+          <span className="font-mono text-[7px] uppercase italic tracking-[0.4em] text-white/45">
+            Fragmento recuperado: 27.05.2189
+          </span>
         </div>
-        <div className="hidden lg:flex gap-20">
-           <MetadataBlock label="Ubicación" value="Territorio Blanco" />
-           <MetadataBlock label="Sección" value="Delta_01-A" />
+        <div className="hidden gap-20 lg:flex">
+          <MetadataBlock label="Ubicacion" value="Territorio Blanco" />
+          <MetadataBlock label="Seccion" value="Delta_01-A" />
         </div>
       </motion.header>
 
-      {/* --- CENTRAL COMPOSITION --- */}
-      <motion.div 
+      <motion.div
         variants={STAGGER_CONTAINER}
         initial="hidden"
         animate="visible"
         style={{ y: yParallax }}
-        className="relative z-30 flex flex-col items-start w-full max-w-[1440px] mx-auto my-auto"
+        className="relative z-30 mx-auto my-auto flex w-full max-w-[1500px] flex-col items-start pt-20 md:pt-0"
       >
-        <div className="flex flex-col gap-10 md:gap-16 w-full">
+        <div className="flex w-full flex-col gap-8 md:gap-14">
           <div className="flex flex-col">
-            <motion.h1 
+            <motion.h1
               variants={TITLE_REVEAL}
-              className="text-[clamp(4rem,12vw,11rem)] font-black text-zinc-200 leading-[0.8] tracking-[-0.05em] select-none cinematic-glow"
+              className="cinematic-glow max-w-[12ch] select-none text-[clamp(4rem,12vw,11rem)] font-black leading-[0.8] tracking-normal text-white"
             >
-              GENOVEVA<br />RÍOS
+              GENOVEVA
+              <br />
+              RIOS
             </motion.h1>
-            
-            <motion.div variants={FADE_IN_UP} className="flex items-center gap-8 mt-12 overflow-hidden">
-              <div className="w-[1px] h-16 bg-zinc-800" />
-              <h2 className="text-2xl md:text-5xl font-extralight tracking-[0.5em] text-zinc-500 uppercase leading-none">
+
+            <motion.div variants={FADE_IN_UP} className="mt-12 flex items-center gap-8 overflow-hidden">
+              <div className="h-16 w-px bg-white/35" />
+              <h2 className="text-xl font-extralight uppercase leading-tight tracking-[0.42em] text-white/70 md:text-4xl">
                 La Tejedora de la Memoria
               </h2>
             </motion.div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-16 md:gap-40 items-start md:items-end w-full">
+          <div className="flex w-full flex-col items-start gap-10 md:flex-row md:items-end md:gap-28">
             <motion.div variants={FADE_IN_UP} className="max-w-lg">
-              <p className="text-zinc-500 text-xl md:text-2xl font-light leading-relaxed tracking-wide italic border-l border-zinc-900 pl-10">
-                “Bolivia dejó de existir hace mucho tiempo. Solo queda el Territorio Blanco.”
+              <p className="border-l border-white/20 pl-8 text-lg font-light italic leading-relaxed tracking-wide text-white/75 md:pl-10 md:text-2xl">
+                "Un pais no desaparece cuando pierde una guerra. Desaparece cuando su gente olvida quien es."
               </p>
             </motion.div>
 
-            <motion.div variants={FADE_IN_UP} className="flex flex-col gap-12">
-               <button className="group relative px-14 py-7 bg-zinc-100 text-black hover:bg-white transition-all duration-700 ease-out active:scale-95 overflow-hidden">
-                  <span className="relative z-10 flex items-center gap-5 text-[10px] tracking-[0.8em] font-black uppercase">
-                    Entrar al archivo
-                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-               </button>
+            <motion.div variants={FADE_IN_UP} className="flex max-w-md flex-col gap-6">
+              <p className="font-mono text-[10px] uppercase leading-loose tracking-[0.22em] text-white/55">
+                Bolivia, ano 2189. El litio convirtio al Salar de Uyuni en una zona industrial militarizada.
+                Genoveva guarda la historia prohibida en tejidos inteligentes.
+              </p>
+              <button className="group relative w-fit overflow-hidden bg-white px-10 py-6 text-black transition-all duration-700 ease-out hover:bg-yellow-100 active:scale-95 md:px-14">
+                <span className="relative z-10 flex items-center gap-5 text-[10px] font-black uppercase tracking-[0.8em]">
+                  Entrar al archivo
+                  <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
+                </span>
+              </button>
             </motion.div>
           </div>
         </div>
       </motion.div>
 
-      {/* --- FOOTER HUD --- */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 2, delay: 1.8 }}
-        className="relative z-30 flex justify-between items-end w-full border-b border-zinc-900/30 pb-8"
+        className="relative z-30 flex w-full items-end justify-between border-b border-white/15 pb-6"
       >
-        <div className="flex gap-24 font-mono text-[8px] tracking-[0.4em] text-zinc-700 uppercase">
-           <div className="flex flex-col gap-2">
-             <span className="opacity-40">Lat: -16.4897</span>
-             <span className="opacity-40">Lng: -68.1193</span>
-           </div>
-           <div className="hidden sm:flex flex-col gap-2">
-             <span className="opacity-40">Alt: 3,640m</span>
-             <span className="opacity-40">System: Loom_OS</span>
-           </div>
+        <div className="flex gap-10 font-mono text-[8px] uppercase tracking-[0.35em] text-white/45 md:gap-24">
+          <div className="flex flex-col gap-2">
+            <span className="opacity-60">Lat: -16.4897</span>
+            <span className="opacity-60">Lng: -68.1193</span>
+          </div>
+          <div className="hidden flex-col gap-2 sm:flex">
+            <span className="opacity-60">Alt: 3,640m</span>
+            <span className="opacity-60">System: Loom_OS</span>
+          </div>
         </div>
-        
+
         <div className="flex flex-col items-end gap-3 text-right">
-          <span className="text-[8px] tracking-[0.6em] text-zinc-600 font-bold uppercase italic opacity-60">Acceso Nivel 0</span>
+          <span className="text-[8px] font-bold uppercase italic tracking-[0.6em] text-white/45">Acceso Nivel 0</span>
           <div className="flex gap-1.5">
-             {[...Array(5)].map((_, i) => (
-               <motion.div 
-                 key={i}
-                 animate={{ opacity: [0.05, 0.3, 0.05] }}
-                 transition={{ duration: 3, delay: i * 0.4, repeat: Infinity }}
-                 className="w-5 h-[1px] bg-zinc-800" 
-               />
-             ))}
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{ opacity: [0.05, 0.35, 0.05] }}
+                transition={{ duration: 3, delay: i * 0.4, repeat: Infinity }}
+                className="h-px w-5 bg-white/70"
+              />
+            ))}
           </div>
         </div>
       </motion.footer>

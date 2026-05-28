@@ -1,75 +1,74 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
+import weavingHall from '../assets/imagenes/7.png';
 
 export const MemoryWeaversSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.08, 1]);
+
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center justify-center px-8 md:px-24 py-40 overflow-hidden bg-[#07080a]">
-      
-      {/* Background Atmosphere: Sacred Technological Weaving */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div 
-          animate={{ opacity: [0.015, 0.03, 0.015] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(200,160,100,0.04)_0%,transparent_50%)]" 
-        />
-        
-        {/* Intricate Weaving Pattern Overlays */}
-        <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay">
-           <div className="absolute inset-0 bg-[size:60px_60px] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] rotate-45 scale-[2]" />
-           <div className="absolute inset-0 bg-[size:120px_120px] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] -rotate-12 scale-[1.5]" />
-        </div>
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#07080a] px-6 py-36 md:px-24 md:py-44"
+    >
+      <motion.div style={{ scale: imageScale }} className="absolute inset-0 z-0">
+        <img src={weavingHall} alt="" className="h-full w-full object-cover object-center opacity-78" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/35 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#07080a] via-transparent to-[#06070a]" />
+      </motion.div>
+
+      <div className="pointer-events-none absolute inset-0 z-10 opacity-20 mix-blend-screen">
+        <div className="absolute inset-0 rotate-45 scale-[2] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:70px_70px]" />
       </div>
 
-      <motion.div 
+      <motion.div
         variants={STAGGER_CONTAINER}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="relative z-10 max-w-6xl w-full flex flex-col items-start gap-32"
+        viewport={{ once: true, margin: '-100px' }}
+        className="relative z-20 flex w-full max-w-6xl flex-col items-start gap-24 md:gap-32"
       >
-        {/* Section Label */}
         <motion.div variants={FADE_IN_UP} className="flex items-center gap-6">
-          <div className="w-12 h-px bg-zinc-800" />
-          <span className="text-[10px] uppercase tracking-[1.2em] text-zinc-600 font-black">Protocolo // Memoria Viva</span>
+          <div className="h-px w-12 bg-white/35" />
+          <span className="text-[10px] font-black uppercase tracking-[1.2em] text-white/55">Protocolo // Memoria Viva</span>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-48 w-full items-center">
+        <div className="grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-2 lg:gap-32">
           <header className="flex flex-col gap-10">
-            <motion.h2 
+            <motion.h2
               variants={TITLE_REVEAL}
-              className="text-6xl md:text-8xl font-bold tracking-tighter text-zinc-200 uppercase leading-[0.85]"
+              className="text-6xl font-bold uppercase leading-[0.85] tracking-normal text-white md:text-8xl"
             >
-              Tejedoras de<br />la Memoria
+              Tejedoras de
+              <br />
+              la Memoria
             </motion.h2>
-            <motion.div variants={FADE_IN_UP} className="w-20 h-[1px] bg-zinc-800" />
-            <motion.p variants={FADE_IN_UP} className="text-zinc-500 text-xl md:text-2xl font-light leading-relaxed italic border-l border-zinc-900 pl-10">
-              “Cada hilo es un bit de historia. Cada patrón, un nodo de resistencia cultural.”
+            <motion.div variants={FADE_IN_UP} className="h-px w-20 bg-white/35" />
+            <motion.p variants={FADE_IN_UP} className="border-l border-white/20 pl-8 text-xl font-light italic leading-relaxed text-white/72 md:text-2xl">
+              "Cada hilo es un archivo. Cada patron, una ruta para que la historia sobreviva."
             </motion.p>
           </header>
 
-          <motion.div variants={FADE_IN_UP} className="flex flex-col gap-12">
-            <p className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed">
-              En los sótanos de las ciudades-colmena, Genoveva y las suyas codifican la historia de Bolivia en textiles inteligentes. Redes neuronales tejidas en lana de alpaca sintética, invisibles a los escáneres cuánticos de la Corporación Aymar-Tech.
+          <motion.div variants={FADE_IN_UP} className="flex flex-col gap-10 bg-black/25 p-6 backdrop-blur-sm md:p-8">
+            <p className="text-lg font-light leading-relaxed text-white/75 md:text-xl">
+              Las comunidades obreras esconden mapas, nombres, fechas y mensajes cifrados dentro de aguayos
+              inteligentes. La resistencia abandono los dispositivos visibles: todo quedo oculto en la ropa.
             </p>
-            
-            {/* Technical Detail Grid */}
-            <div className="grid grid-cols-2 gap-12 py-10 border-t border-zinc-900/50">
-               <div className="flex flex-col gap-3">
-                 <span className="text-[8px] text-zinc-600 tracking-[0.6em] uppercase font-black">Bio-Sincronización</span>
-                 <span className="text-sm text-zinc-500 font-mono italic opacity-60">Frec: 432hz // Estable</span>
-               </div>
-               <div className="flex flex-col gap-3">
-                 <span className="text-[8px] text-zinc-600 tracking-[0.6em] uppercase font-black">Compresión</span>
-                 <span className="text-sm text-zinc-500 font-mono italic opacity-60">1.2 PetaHilos / cm²</span>
-               </div>
+
+            <div className="grid grid-cols-2 gap-8 border-t border-white/15 pt-8">
+              <div className="flex flex-col gap-3">
+                <span className="text-[8px] font-black uppercase tracking-[0.6em] text-white/50">Ponchos</span>
+                <span className="font-mono text-sm italic text-white/50">Almacenamiento textil</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                <span className="text-[8px] font-black uppercase tracking-[0.6em] text-white/50">Aguayos</span>
+                <span className="font-mono text-sm italic text-white/50">Rutas codificadas</span>
+              </div>
             </div>
           </motion.div>
         </div>
-
-        <motion.div 
-          variants={FADE_IN_UP}
-          className="w-full h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent opacity-30"
-        />
       </motion.div>
     </section>
   );
