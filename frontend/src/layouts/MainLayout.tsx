@@ -4,6 +4,7 @@ import { GrainOverlay } from '../components/atmosphere/GrainOverlay';
 import { VignetteOverlay } from '../components/atmosphere/VignetteOverlay';
 import { FogLayer } from '../components/atmosphere/FogLayer';
 import { AmbientGlow } from '../components/atmosphere/AmbientGlow';
+import { AmbientSoundscape } from '../components/atmosphere/AmbientSoundscape';
 import { LiquidCursorDistortion } from '../components/effects/LiquidCursorDistortion';
 import { CinematicEnvironment } from '../components/three/CinematicEnvironment';
 
@@ -66,6 +67,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         blur={9}
         fadeSpeed={0.12}
       />
+      <AmbientSoundscape />
       
       {/* Content wrapper (z-20 ensures it's above background systems) */}
       <div className="relative z-20 w-full flex flex-col">

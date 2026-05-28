@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
+import { playHover, playClick } from '../lib/sound';
 import whiteTerritory from '../assets/imagenes/9.png';
 
 export const FinalSection = () => {
@@ -60,7 +61,11 @@ export const FinalSection = () => {
           </div>
 
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onMouseEnter={playHover}
+            onClick={() => {
+              playClick();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="group relative border border-amber-100/26 bg-[#1c1006]/34 px-10 py-7 transition-all duration-700 ease-out hover:border-white/80 active:scale-95 md:px-16"
           >
             <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.9em] text-white/60 transition-colors group-hover:text-white">

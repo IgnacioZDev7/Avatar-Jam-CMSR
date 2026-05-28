@@ -31,11 +31,12 @@ const ScrollCamera = () => {
   const smoothRef = useRef(0);
 
   useFrame(({ camera }, delta) => {
+    const clampedDelta = Math.min(delta, 0.05);
     const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
     const raw = window.scrollY / maxScroll;
     scrollRef.current = raw;
 
-    smoothRef.current += (raw - smoothRef.current) * Math.min(delta * 2, 0.1);
+    smoothRef.current += (raw - smoothRef.current) * Math.min(clampedDelta * 2, 0.1);
 
     const progress = smoothRef.current;
     const eased = easeInOutCubic(progress);
@@ -55,11 +56,22 @@ const ScrollCamera = () => {
   return null;
 };
 
+function usePageVisible() {
+  const visibleRef = useRef(true);
+  useEffect(() => {
+    const handler = () => { visibleRef.current = !document.hidden; };
+    document.addEventListener('visibilitychange', handler);
+    return () => document.removeEventListener('visibilitychange', handler);
+  }, []);
+  return visibleRef;
+}
+
 const FloatingParticles = () => {
   const pointsRef = useRef<THREE.Points>(null!);
   const mouseRef = useRef(new THREE.Vector2(999, 999));
   const positionsRef = useRef(new Float32Array(POSITIONS));
   const velocitiesRef = useRef(new Float32Array(PARTICLE_COUNT * 3));
+  const visibleRef = usePageVisible();
 
   useEffect(() => {
     const handleMouse = (e: MouseEvent) => {
@@ -71,6 +83,9 @@ const FloatingParticles = () => {
   }, []);
 
   useFrame((_state, delta) => {
+    if (!visibleRef.current) return;
+
+    const clampedDelta = Math.min(delta, 0.05);
     const positions = positionsRef.current;
     const velocities = velocitiesRef.current;
     const mouse = mouseRef.current;
@@ -91,24 +106,24 @@ const FloatingParticles = () => {
 
       if (dist < 10 && dist > 0.01) {
         const strength = (1 - dist / 10) * 5;
-        velocities[i3] += (dx / dist) * strength * delta;
-        velocities[i3 + 2] += (dz / dist) * strength * delta;
-        velocities[i3 + 1] += 2 * delta;
+        velocities[i3] += (dx / dist) * strength * clampedDelta;
+        velocities[i3 + 2] += (dz / dist) * strength * clampedDelta;
+        velocities[i3 + 1] += 2 * clampedDelta;
       }
 
       const ox = POSITIONS[i3];
       const oy = POSITIONS[i3 + 1];
       const oz = POSITIONS[i3 + 2];
 
-      velocities[i3] += (ox - px) * 0.4 * delta;
-      velocities[i3 + 1] += (oy - py) * 0.2 * delta;
-      velocities[i3 + 2] += (oz - pz) * 0.4 * delta;
+      velocities[i3] += (ox - px) * 0.4 * clampedDelta;
+      velocities[i3 + 1] += (oy - py) * 0.2 * clampedDelta;
+      velocities[i3 + 2] += (oz - pz) * 0.4 * clampedDelta;
 
       velocities[i3] *= 0.92;
       velocities[i3 + 1] *= 0.92;
       velocities[i3 + 2] *= 0.92;
 
-      velocities[i3 + 1] -= 0.6 * delta;
+      velocities[i3 + 1] -= 0.6 * clampedDelta;
 
       positions[i3] += velocities[i3];
       positions[i3 + 1] += velocities[i3 + 1];
@@ -143,8 +158,12 @@ const ForegroundParticles = () => {
   const pointsRef = useRef<THREE.Points>(null!);
   const positionsRef = useRef(new Float32Array(FG_POSITIONS));
   const velocitiesRef = useRef(new Float32Array(FOREGROUND_COUNT * 3));
+  const visibleRef = usePageVisible();
 
   useFrame((_state, delta) => {
+    if (!visibleRef.current) return;
+
+    const clampedDelta = Math.min(delta, 0.05);
     const positions = positionsRef.current;
     const velocities = velocitiesRef.current;
 
@@ -155,9 +174,9 @@ const ForegroundParticles = () => {
       const oy = FG_POSITIONS[i3 + 1];
       const oz = FG_POSITIONS[i3 + 2];
 
-      velocities[i3] += (ox - positions[i3]) * 0.3 * delta;
-      velocities[i3 + 1] += (oy - positions[i3 + 1]) * 0.2 * delta;
-      velocities[i3 + 2] += (oz - positions[i3 + 2]) * 0.3 * delta;
+      velocities[i3] += (ox - positions[i3]) * 0.3 * clampedDelta;
+      velocities[i3 + 1] += (oy - positions[i3 + 1]) * 0.2 * clampedDelta;
+      velocities[i3 + 2] += (oz - positions[i3 + 2]) * 0.3 * clampedDelta;
 
       velocities[i3] *= 0.95;
       velocities[i3 + 1] *= 0.95;

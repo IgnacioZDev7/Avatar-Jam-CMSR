@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { WebBlendModel } from '../components/three/WebBlendModel';
 import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
+import { playHover, playClick, playReveal, initSound } from '../lib/sound';
 import factoryCity from '../assets/imagenes/8.png';
 
 const ModelRevealPanel = () => {
@@ -34,7 +35,13 @@ const ModelRevealPanel = () => {
           <span className="font-mono text-[8px] uppercase tracking-[1em] text-cyan-50/78">Archivo recuperado // Avatar 360</span>
           <button
             type="button"
-            onClick={() => setIsRevealed(true)}
+            onMouseEnter={playHover}
+            onClick={() => {
+              initSound();
+              playClick();
+              setTimeout(() => playReveal(), 200);
+              setIsRevealed(true);
+            }}
             className="border border-white/20 bg-white px-8 py-4 text-[9px] font-black uppercase tracking-[0.55em] text-black transition hover:bg-cyan-100 active:scale-95"
           >
             Desbloquear avatar

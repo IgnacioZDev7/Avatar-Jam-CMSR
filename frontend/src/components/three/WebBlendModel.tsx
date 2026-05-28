@@ -17,7 +17,6 @@ function WebModel() {
     colorTexture.needsUpdate = true;
 
     scene.traverse((child) => {
-      child.frustumCulled = false;
       const mesh = child as Mesh;
       if (!mesh.isMesh) return;
 
@@ -77,7 +76,7 @@ export function WebBlendModel() {
         <pointLight position={[-1.5, 1.25, 1.8]} color="#22d3ee" intensity={0.36} distance={5.2} />
         <Suspense fallback={null}>
           <WebModel />
-          <Environment preset="city" environmentIntensity={0.18} />
+          <Environment preset="studio" environmentIntensity={0.18} />
         </Suspense>
         <OrbitControls
           enabled
@@ -96,6 +95,3 @@ export function WebBlendModel() {
     </div>
   );
 }
-
-useGLTF.preload(MODEL_PATH);
-useTexture.preload(TEXTURE_PATH);

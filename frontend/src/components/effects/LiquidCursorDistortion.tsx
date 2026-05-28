@@ -102,6 +102,7 @@ export const LiquidCursorDistortion = ({
     const animate = () => {
       const pointer = pointerRef.current;
       const trail = pointsRef.current;
+      let settled = true;
 
       for (let index = 0; index < trail.length; index += 1) {
         const point = trail[index];
@@ -115,6 +116,10 @@ export const LiquidCursorDistortion = ({
         point.x += (point.targetX - point.x) * follow;
         point.y += (point.targetY - point.y) * follow;
         point.life += ((pointer.active ? 1 : 0) - point.life) * fade;
+
+        if (Math.abs(point.x - point.targetX) > 0.01 || Math.abs(point.y - point.targetY) > 0.01) {
+          settled = false;
+        }
 
         if (node) {
           const progress = 1 - index / Math.max(trail.length - 1, 1);
@@ -133,7 +138,9 @@ export const LiquidCursorDistortion = ({
         }
       }
 
-      rafRef.current = requestAnimationFrame(animate);
+      if (pointer.active || !settled) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
     };
 
     rafRef.current = requestAnimationFrame(animate);
