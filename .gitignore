@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+#skills
+docs/
+
 # Production build
 dist/
 build/
