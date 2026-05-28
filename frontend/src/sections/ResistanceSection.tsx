@@ -1,7 +1,58 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { WebBlendModel } from '../components/three/WebBlendModel';
 import { FADE_IN_UP, STAGGER_CONTAINER, TITLE_REVEAL } from '../lib/motion';
 import factoryCity from '../assets/imagenes/8.png';
+
+const ModelRevealPanel = () => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  return (
+    <motion.div
+      variants={FADE_IN_UP}
+      className="relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden border border-white/15 bg-black/45"
+    >
+      <motion.div
+        initial={false}
+        animate={{ opacity: isRevealed ? 0 : 1 }}
+        transition={{ duration: 0.75 }}
+        className="absolute inset-0 z-20 flex items-center justify-center"
+        style={{ pointerEvents: isRevealed ? 'none' : 'auto' }}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+        <motion.div
+          animate={{ x: ['-120%', '120%'] }}
+          transition={{ duration: 3.4, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-cyan-200/12 to-transparent"
+        />
+        <motion.div
+          animate={{ scale: [0.94, 1.06, 0.94], opacity: [0.28, 0.58, 0.28] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute h-40 w-40 rounded-full border border-cyan-100/20"
+        />
+        <div className="relative z-10 flex flex-col items-center gap-7 text-center">
+          <span className="font-mono text-[8px] uppercase tracking-[1em] text-white/55">Archivo recuperado // Avatar 360</span>
+          <button
+            type="button"
+            onClick={() => setIsRevealed(true)}
+            className="border border-white/20 bg-white px-8 py-4 text-[9px] font-black uppercase tracking-[0.55em] text-black transition hover:bg-cyan-100 active:scale-95"
+          >
+            Desbloquear avatar
+          </button>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={false}
+        animate={{ opacity: isRevealed ? 1 : 0, scale: isRevealed ? 1 : 0.96 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="absolute inset-0"
+      >
+        {isRevealed && <WebBlendModel />}
+      </motion.div>
+    </motion.div>
+  );
+};
 
 export const ResistanceSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -63,27 +114,7 @@ export const ResistanceSection = () => {
           </motion.div>
         </div>
 
-        <motion.div variants={FADE_IN_UP} className="relative flex aspect-[21/9] w-full items-center justify-center overflow-hidden border border-red-200/15 bg-black/35">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(248,113,113,0.22),transparent_34%)]" />
-          <motion.div
-            animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.25, 0.7, 0.25] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute h-36 w-36 rounded-full border border-red-200/30"
-          />
-          <div className="relative z-10 flex flex-col items-center gap-6 text-center">
-            <span className="font-mono text-[8px] uppercase tracking-[1em] text-white/65">Senal cifrada // Nodo Rebelion</span>
-            <div className="flex gap-2">
-              {[...Array(12)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{ height: [6, 28, 6] }}
-                  transition={{ duration: 0.8, delay: i * 0.08, repeat: Infinity }}
-                  className="w-px bg-red-200/60"
-                />
-              ))}
-            </div>
-          </div>
-        </motion.div>
+        <ModelRevealPanel />
       </motion.div>
     </section>
   );

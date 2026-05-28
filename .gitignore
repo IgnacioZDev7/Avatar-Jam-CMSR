@@ -56,6 +56,8 @@ exports/
 # Three.js generated
 *.glb
 *.gltf
+!frontend/public/models/
+!frontend/public/models/web.glb
 
 # Local configs
 *.local

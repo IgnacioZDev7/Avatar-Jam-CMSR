@@ -29,34 +29,6 @@ const ScrollGuide = () => (
   </motion.div>
 );
 
-const ModelPlaceholder = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 40, scale: 0.96 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    transition={{ delay: 1.35, duration: 1.8, ease: 'easeOut' }}
-    className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-20 mx-auto flex h-[58vh] min-h-[390px] max-h-[690px] w-[min(58vw,520px)] items-end justify-center"
-  >
-    <motion.div
-      animate={{ y: [0, -10, 0] }}
-      transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-      className="relative h-full w-full"
-    >
-      <div className="absolute left-1/2 top-[3%] h-[17%] w-[22%] -translate-x-1/2 rounded-full border border-white/10 bg-black/75 shadow-[0_0_80px_rgba(234,179,8,0.22)]" />
-      <div className="absolute left-1/2 top-[18%] h-[43%] w-[34%] -translate-x-1/2 rounded-b-[18%] rounded-t-[42%] border border-white/10 bg-gradient-to-b from-black/90 via-zinc-950/95 to-black/90" />
-      <div className="absolute left-[24%] top-[21%] h-[45%] w-[9%] rotate-[8deg] rounded-full bg-black/85" />
-      <div className="absolute right-[24%] top-[21%] h-[45%] w-[9%] -rotate-[8deg] rounded-full bg-black/85" />
-      <div className="absolute left-[38%] top-[58%] h-[40%] w-[9%] rotate-[3deg] rounded-full bg-black/90" />
-      <div className="absolute right-[38%] top-[58%] h-[40%] w-[9%] -rotate-[3deg] rounded-full bg-black/90" />
-      <div className="absolute left-[53%] top-[15%] h-[72%] w-[3px] rotate-[-8deg] rounded-full bg-gradient-to-b from-red-500 via-yellow-300 to-emerald-400 shadow-[0_0_24px_rgba(250,204,21,0.8)]" />
-      <div className="absolute left-1/2 bottom-[1%] h-[8%] w-[52%] -translate-x-1/2 rounded-full bg-black/80 blur-xl" />
-      <div className="absolute left-1/2 top-[38%] -translate-x-1/2 rounded border border-white/15 bg-black/45 px-4 py-2 text-center backdrop-blur-sm">
-        <span className="block text-[8px] font-black uppercase tracking-[0.6em] text-white/70">Modelo 3D</span>
-        <span className="mt-1 block text-[7px] uppercase tracking-[0.35em] text-white/40">En desarrollo</span>
-      </div>
-    </motion.div>
-  </motion.div>
-);
-
 export const Hero = () => {
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 1000], [0, 180]);
@@ -113,8 +85,6 @@ export const Hero = () => {
         <div className="absolute inset-x-0 top-1/2 h-[42vh] bg-gradient-to-t from-[#18102b]/80 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:90px_90px] opacity-15" />
       </motion.div>
-
-      <ModelPlaceholder />
 
       <motion.header
         initial={{ opacity: 0, y: -10 }}
