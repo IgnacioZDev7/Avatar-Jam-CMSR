@@ -72,7 +72,7 @@ export const Hero = () => {
         initial={{ opacity: 0, x: 48, y: 28, scale: 0.94 }}
         animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
         transition={{ duration: 1.6, delay: 0.75, ease: 'easeOut' }}
-        className="pointer-events-none absolute bottom-0 right-[3vw] z-20 hidden h-[78vh] max-h-[760px] min-h-[520px] w-[min(34vw,430px)] lg:block"
+        className="pointer-events-none absolute bottom-0 right-[3vw] z-20 h-[40vh] max-h-[400px] min-h-[280px] w-[min(50vw,320px)] md:h-[60vh] md:max-h-[600px] md:min-h-[400px] md:w-[min(40vw,380px)] lg:h-[78vh] lg:max-h-[760px] lg:min-h-[520px] lg:w-[min(34vw,430px)]"
       >
         <motion.img
           src={personaje}
